@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  python-predictor:
+    container_name: python-predictor
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - backend_app-network
+    volumes:
+      - sk_invoice_receipts:/usr/src/app/sk_invoice_receipts
+      
+networks:
+  backend_app-network:
+    external: true
+
+volumes:
+    postgres:
+    pgadmin:
+    sk_invoice_receipts:
+    uploads:
