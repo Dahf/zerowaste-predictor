@@ -26,7 +26,7 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get image buffer from request
-    image_data = request.data_split_list
+    image_data = request.data
     
     output_ids = model.generate(torch.frombuffer(image_data), **gen_kwargs)
 
