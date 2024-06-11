@@ -8,12 +8,12 @@ services:
     ports:
       - "5000:5000"
     networks:
-      - backend_app-network
+      - zerowaste-api_app-network
     volumes:
       - sk_invoice_receipts:/usr/src/app/sk_invoice_receipts
       
 networks:
-  backend_app-network:
+  zerowaste-api_app-network:
     external: true
 
 volumes:
