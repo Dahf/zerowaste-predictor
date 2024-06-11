@@ -12,7 +12,7 @@ feature_extractor = ViTImageProcessor.from_pretrained(
     'sk_invoice_receipts')
 tokenizer = AutoTokenizer.from_pretrained('sk_invoice_receipts')
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cpu')
 model.to(device)
 
 max_length = 16
@@ -26,15 +26,9 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get image buffer from request
-    image_data = request.data
-    image = Image.open(BytesIO(image_data))
-
-    # Get image buffer from request
-    pixel_values = feature_extractor(
-        images=[image], return_tensors='pt').pixel_values
-    pixel_values = pixel_values.to(device)
-
-    output_ids = model.generate(pixel_values, **gen_kwargs)
+    image_data = request.data_split_list
+    
+    output_ids = model.generate(torch.frombuffer(image_data), **gen_kwargs)
 
     preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
     preds = [pred.strip() for pred in preds]
