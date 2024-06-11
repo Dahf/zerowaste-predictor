@@ -4,6 +4,7 @@ FROM pytorch/pytorch:latest
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
+# Install necessary dependencies
 RUN apt-get update && apt-get install -y \
     tesseract-ocr \
     tesseract-ocr-deu \
@@ -12,12 +13,23 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     libxrender1 \
     libfontconfig1 \
-    libice6
+    libice6 \
+    git \
+    curl
 
-RUN pip install flask tensorflow langdetect pytesseract opencv-python-headless pillow scipy transformers tensorrt
+# Install Git LFS
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt-get install git-lfs
+RUN git lfs install
 
 # Copy the rest of the application
 COPY . .
+
+# Pull the large files using Git LFS
+RUN git lfs pull
+
+# Install Python dependencies
+RUN pip install flask tensorflow langdetect pytesseract opencv-python-headless pillow scipy transformers tensorrt
 
 # Expose the application port
 EXPOSE 5000
