@@ -13,14 +13,7 @@ RUN apt-get update && apt-get install -y \
     libsm6 \
     libxrender1 \
     libfontconfig1 \
-    libice6 \
-    git \
-    curl
-
-# Install Git LFS
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
-RUN apt-get install git-lfs
-RUN git lfs install
+    libice6
 
 # Copy the rest of the application
 COPY . .
