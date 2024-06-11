@@ -25,9 +25,6 @@ RUN git lfs install
 # Copy the rest of the application
 COPY . .
 
-# Pull the large files using Git LFS
-RUN git lfs pull
-
 # Install Python dependencies
 RUN pip install flask tensorflow langdetect pytesseract opencv-python-headless pillow scipy transformers tensorrt
 
