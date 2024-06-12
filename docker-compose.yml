@@ -17,4 +17,4 @@ networks:
     external: true
 
 volumes:
-    app:
+    pred:
