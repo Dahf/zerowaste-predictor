@@ -10,11 +10,11 @@ services:
     networks:
       - zerowaste-api_app-network
     volumes:
-      - .:/usr/src/app
+      - app:/usr/src/app
       
 networks:
   zerowaste-api_app-network:
     external: true
 
 volumes:
-    sk_invoice_receipts:
+    app:
