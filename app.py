@@ -27,13 +27,17 @@ def home():
 def predict():
     # Get image buffer from request
     image_data = request.data
-    
-    output_ids = model.generate(torch.frombuffer(image_data), **gen_kwargs)
+    image = Image.open(BytesIO(image_data))
 
+    # Preprocess the image
+    pixel_values = feature_extractor(images=image, return_tensors="pt").pixel_values.to(device)
+    
+    # Generate predictions
+    output_ids = model.generate(pixel_values, **gen_kwargs)
     preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
     preds = [pred.strip() for pred in preds]
     
-    return preds[0]
+    return jsonify({'prediction': preds[0]})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
