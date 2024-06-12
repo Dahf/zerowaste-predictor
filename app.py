@@ -15,10 +15,6 @@ tokenizer = AutoTokenizer.from_pretrained('sk_invoice_receipts')
 device = torch.device('cpu')
 model.to(device)
 
-max_length = 16
-num_beams = 4
-gen_kwargs = {'max_length': max_length, 'num_beams': num_beams}
-
 @app.route('/')
 def home():
     return "Welcome to the Image Prediction API"
@@ -33,7 +29,7 @@ def predict():
     pixel_values = feature_extractor(images=image, return_tensors="pt").pixel_values.to(device)
     
     # Generate predictions
-    output_ids = model.generate(pixel_values, **gen_kwargs)
+    output_ids = model.generate(pixel_values)
     preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
     preds = [pred.strip() for pred in preds]
     
