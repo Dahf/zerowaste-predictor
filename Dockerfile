@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 COPY . .
 
 # Install Python dependencies
-RUN pip install flask tensorflow langdetect pytesseract opencv-python-headless pillow scipy transformers tensorrt PyYAML datasets seqeval
+RUN pip install flask tensorflow langdetect pytesseract opencv-python-headless pillow scipy transformers tensorrt PyYAML datasets seqeval imutils
 
 # Expose the application port
 EXPOSE 5000
