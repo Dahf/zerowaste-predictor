@@ -140,8 +140,8 @@ def predict():
     # Enhance txt
     enhanced = enhance_txt(cropped)
     enhanced_rgb = cv2.cvtColor(enhanced, cv2.COLOR_BGR2RGB)
-    enhanced_path = 'preprocessed/enhanced.jpg'
-    
+    enhanced_path = 'saved_images/uploaded_image.png'
+
     # Bild auf dem Server speichern
     plt.imsave(enhanced_path, enhanced_rgb)
 
