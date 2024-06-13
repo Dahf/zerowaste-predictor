@@ -9,8 +9,8 @@ import re
 app = Flask(__name__)
 
 # Laden Sie das Modell
-model = VisionEncoderDecoderModel.from_pretrained('sk_invoice_receipts')
-processor = DonutProcessor.from_pretrained('sk_invoice_receipts')
+model = VisionEncoderDecoderModel.from_pretrained('model')
+processor = DonutProcessor.from_pretrained('model')
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
