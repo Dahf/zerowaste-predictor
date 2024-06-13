@@ -8,6 +8,7 @@ import re
 import cv2
 import numpy as np
 import imutils
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -139,10 +140,10 @@ def predict():
     # Enhance txt
     enhanced = enhance_txt(cropped)
     enhanced_rgb = cv2.cvtColor(enhanced, cv2.COLOR_BGR2RGB)
-
+    enhanced_path = 'preprocessed/enhanced.jpg'
+    
     # Bild auf dem Server speichern
-    image_filename = os.path.join(IMAGE_SAVE_PATH, 'uploaded_image.png')
-    enhanced_rgb.save(image_filename)
+    plt.imsave(enhanced_path, enhanced_rgb)
 
     # Preprocess the image
     pixel_values = processor(images=enhanced_rgb, return_tensors="pt").pixel_values.to(device)
