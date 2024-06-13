@@ -37,8 +37,8 @@ def predict():
     pixel_values = processor(images=image, return_tensors="pt").pixel_values.to(device)
     model.eval()
     with torch.no_grad():
-
-        decoder_input_ids = processor.tokenizer(add_special_tokens=False, return_tensors="pt").input_ids
+        task_prompt = "<s_receipt>"
+        decoder_input_ids = processor.tokenizer(task_prompt, add_special_tokens=False, return_tensors="pt").input_ids
         decoder_input_ids = decoder_input_ids.to(device)
         generated_outputs = model.generate(
             pixel_values,
