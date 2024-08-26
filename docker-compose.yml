@@ -2,19 +2,30 @@ version: '3.8'
 services:
   python-predictor:
     container_name: python-predictor
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.predict.entrypoints=web,websecure
+      - traefik.http.services.predict.loadbalancer.server.port=5123
+      - traefik.http.routers.predict.rule=Host(`predict.silasbeckmann.de`)
+      - traefik.http.routers.predict.tls=true
+      - traefik.docker.network=traefik_proxy-net
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5123:5123"
     networks:
       - zerowaste-api_app-network
+      - traefik_proxy-net
     volumes:
       - app:/usr/src/app
       
 networks:
   zerowaste-api_app-network:
     external: true
+  traefik_proxy-net:
+    external: true
 
 volumes:
-    app:
+  app:
+  
