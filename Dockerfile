@@ -1,28 +1,21 @@
-# Use the official PyTorch image as a base to avoid dependency issues
-FROM pytorch/pytorch:latest
+# Verwende ein leichtes Python-Image als Basis
+FROM python:3.10-slim
 
-# Set the working directory in the container
+# Setze das Arbeitsverzeichnis im Container
 WORKDIR /usr/src/app
 
-# Install necessary dependencies
-RUN apt-get update && apt-get install -y \
-    tesseract-ocr \
-    tesseract-ocr-deu \
-    tesseract-ocr-eng \
-    tesseract-ocr-fra \
-    libsm6 \
-    libxrender1 \
-    libfontconfig1 \
-    libice6
-
-# Copy the rest of the application
+# Kopiere die Anwendung in das Arbeitsverzeichnis
 COPY . .
 
-# Install Python dependencies
-RUN pip install flask tensorflow matplotlib langdetect pytesseract opencv-python-headless pillow scipy transformers==4.36.2 tensorrt PyYAML datasets seqeval imutils
+# Installiere nur die notwendigen Python-Abhängigkeiten
+RUN pip install --no-cache-dir \
+    flask \
+    boto3 \
+    transformers==4.37.0 \
+    pillow
 
-# Expose the application port
+# Exponiere den Port, auf dem die Flask-Anwendung läuft
 EXPOSE 5000
 
-# Set the command to run the application
+# Setze den Befehl zum Starten der Anwendung
 CMD ["python", "app.py"]
