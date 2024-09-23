@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, send_file
 from PIL import Image, ExifTags
 from io import BytesIO
 import boto3
@@ -44,7 +44,29 @@ def correct_image_orientation(image):
 
 @app.route('/')
 def home():
-    return "Welcome to the Image Prediction API"
+    return render_template('upload.html')
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    # Get the image from the form data
+    if 'file' not in request.files:
+        return "No file part", 400
+    file = request.files['file']
+    
+    if file.filename == '':
+        return "No selected file", 400
+    
+    # Open the image and correct orientation
+    image = Image.open(file)
+    image = correct_image_orientation(image)
+    
+    # Save the corrected image temporarily to return it
+    image_io = BytesIO()
+    image.save(image_io, format='PNG')
+    image_io.seek(0)
+
+    # Serve the image back to the frontend
+    return send_file(image_io, mimetype='image/png')
 
 @app.route('/predict', methods=['POST'])
 def predict():
