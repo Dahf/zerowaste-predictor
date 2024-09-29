@@ -6,8 +6,11 @@ import json
 import os
 import re
 import base64
+from transformers import AutoTokenizer
 
 app = Flask(__name__)
+
+tokenizer = AutoTokenizer.from_pretrained('Xenova/paraphrase-multilingual-MiniLM-L12-v2')
 
 # SageMaker Endpunktname
 ENDPOINT_NAME = 'huggingface-pytorch-inference-2024-09-22-15-58-30-837'  # Füge hier deinen SageMaker-Endpunktnamen ein
@@ -68,6 +71,33 @@ def upload():
     # Serve the image back to the frontend
     return send_file(image_io, mimetype='image/png')
 
+@app.route('/tokenize', methods=['POST'])
+def tokenize_text():
+    try:
+        # Empfange die Textdaten (Kategorien und Zutaten) aus der POST-Anfrage
+        data = request.json
+        categories = data.get('categories')
+        ingredients = data.get('ingredients')
+
+        if not categories or not ingredients:
+            return jsonify({'error': 'No categories or ingredients provided'}), 400
+
+        # Tokenisiere die Kategorien und Zutaten ohne Rückgabe von PyTorch-Tensoren
+        encoded_categories = tokenizer(categories, padding=True, truncation=True, return_tensors='np')
+        encoded_ingredients = tokenizer(ingredients, padding=True, truncation=True, return_tensors='np')
+
+        # Gib die tokenisierten Daten als Listen zurück
+        response = {
+            'category_input_ids': encoded_categories['input_ids'],  # Listen von IDs
+            'category_attention_mask': encoded_categories['attention_mask'],  # Listen von Masken
+            'ingredient_input_ids': encoded_ingredients['input_ids'],  # Listen von IDs
+            'ingredient_attention_mask': encoded_ingredients['attention_mask'],  # Listen von Masken
+        }
+        return jsonify(response)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get image buffer from request

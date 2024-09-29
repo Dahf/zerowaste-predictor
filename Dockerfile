@@ -10,6 +10,7 @@ COPY . .
 # Installiere nur die notwendigen Python-Abhängigkeiten
 RUN pip install --no-cache-dir \
     flask \
+    transformers \
     boto3 \
     transformers==4.37.0 \
     pillow
