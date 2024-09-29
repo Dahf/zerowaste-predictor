@@ -88,10 +88,10 @@ def tokenize_text():
 
         # Gib die tokenisierten Daten als Listen zurück
         response = {
-            'category_input_ids': encoded_categories['input_ids'],  # Listen von IDs
-            'category_attention_mask': encoded_categories['attention_mask'],  # Listen von Masken
-            'ingredient_input_ids': encoded_ingredients['input_ids'],  # Listen von IDs
-            'ingredient_attention_mask': encoded_ingredients['attention_mask'],  # Listen von Masken
+            'category_input_ids': encoded_categories['input_ids'].tolist(),  # NumPy -> Liste
+            'category_attention_mask': encoded_categories['attention_mask'].tolist(),  # NumPy -> Liste
+            'ingredient_input_ids': encoded_ingredients['input_ids'].tolist(),  # NumPy -> Liste
+            'ingredient_attention_mask': encoded_ingredients['attention_mask'].tolist(),  # NumPy -> Liste
         }
         return jsonify(response)
 
