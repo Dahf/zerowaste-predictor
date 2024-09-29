@@ -90,8 +90,11 @@ def tokenize_text():
         response = {
             'category_input_ids': encoded_categories['input_ids'].tolist(),  # NumPy -> Liste
             'category_attention_mask': encoded_categories['attention_mask'].tolist(),  # NumPy -> Liste
+            'category_token_type_ids': encoded_categories['token_type_ids'].tolist() if 'token_type_ids' in encoded_categories else None,  # NumPy -> Liste, wenn vorhanden
+
             'ingredient_input_ids': encoded_ingredients['input_ids'].tolist(),  # NumPy -> Liste
             'ingredient_attention_mask': encoded_ingredients['attention_mask'].tolist(),  # NumPy -> Liste
+            'ingredient_token_type_ids': encoded_ingredients['token_type_ids'].tolist() if 'token_type_ids' in encoded_ingredients else None,  # NumPy -> Liste, wenn vorhanden
         }
         return jsonify(response)
 
