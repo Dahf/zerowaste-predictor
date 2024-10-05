@@ -7,6 +7,7 @@ import os
 import re
 import base64
 from transformers import AutoTokenizer
+import logging
 
 app = Flask(__name__)
 
@@ -100,15 +101,15 @@ def tokenize_text():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 @app.route('/log', methods=['POST'])
 def log_data():
     # Empfange die JSON-Daten vom Client
     data = request.json
-    # Schreibe die Logs in eine Datei oder auf die Konsole
-    with open('logs.txt', 'a') as f:
-        f.write(f"{data}\n")
-    print(f"Received log: {data}")
+    logger.info(f"{data}")
     return jsonify({"message": "Log received"}), 200 
 
 @app.route('/predict', methods=['POST'])
