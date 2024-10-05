@@ -17,15 +17,11 @@ services:
     networks:
       - zerowaste-api_app-network
       - traefik_proxy-net
-    volumes:
-      - app:/usr/src/app
-      
+    
 networks:
   zerowaste-api_app-network:
     external: true
   traefik_proxy-net:
     external: true
 
-volumes:
-  app:
   
