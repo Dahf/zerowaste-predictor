@@ -101,6 +101,16 @@ def tokenize_text():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+@app.route('/log', methods=['POST'])
+def log_data():
+    # Empfange die JSON-Daten vom Client
+    data = request.json
+    # Schreibe die Logs in eine Datei oder auf die Konsole
+    with open('logs.txt', 'a') as f:
+        f.write(f"{data}\n")
+    print(f"Received log: {data}")
+    return jsonify({"message": "Log received"}), 200 
+
 @app.route('/predict', methods=['POST'])
 def predict():
     # Get image buffer from request
